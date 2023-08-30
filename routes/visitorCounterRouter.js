@@ -5,8 +5,8 @@ const router = express.Router();
 // Get all visitor counters
 router.get("/", async (req, res) => {
   try {
-    const visitorCounters = await VisitorCounter.find().exec();
-    res.json(visitorCounters);
+    const countDoc = await VisitorCounter.findOne();
+    res.json({ count: countDoc.count });
   } catch (err) {
     console.error(err);
     res.status(500).send("Error fetching visitor counters");
@@ -15,46 +15,12 @@ router.get("/", async (req, res) => {
 
 // Create a new visitor counter
 router.post("/", async (req, res) => {
-  try {
-    const visitorCounter = new VisitorCounter({ count: req.body.count });
-    await visitorCounter.save();
-    res.json(visitorCounter);
-  } catch (err) {
-    console.error(err);
-    res.status(500).send("Error creating visitor counter");
-  }
-});
-
-// Increment a visitor counter
-router.put("/:id", async (req, res) => {
-  try {
-    const id = req.params.id;
-    const visitorCounter = await VisitorCounter.findByIdAndUpdate(
-      id,
-      { $inc: { count: 1 } },
-      { new: true }
-    ).exec();
-    res.json(visitorCounter);
-  } catch (err) {
-    console.error(err);
-    res.status(500).send("Error incrementing visitor counter");
-  }
-});
-
-// Decrement a visitor counter
-router.delete("/:id", async (req, res) => {
-  try {
-    const id = req.params.id;
-    const visitorCounter = await VisitorCounter.findByIdAndUpdate(
-      id,
-      { $inc: { count: -1 } },
-      { new: true }
-    ).exec();
-    res.json(visitorCounter);
-  } catch (err) {
-    console.error(err);
-    res.status(500).send("Error decrementing visitor counter");
-  }
+  await VisitorCounter.findOneAndUpdate(
+    {},
+    { $inc: { count: 1 } },
+    { upsert: true }
+  );
+  res.json({ message: "Visitor count increased by one." });
 });
 
 module.exports = router;

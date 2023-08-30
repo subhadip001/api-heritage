@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
+const { VisitorCounter } = require("./models/visitorCounter");
 const app = express();
 
 require("./config/db");
@@ -24,6 +25,7 @@ if (process.env.NODE_ENV !== "production") {
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+
 
 app.use("/marg/visitor", require("./routes/visitorCounterRouter"));
 
