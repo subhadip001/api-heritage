@@ -9,7 +9,7 @@ require("./config/db");
 require("dotenv").config();
 
 const allowedOrigins = [
-  "https://marg-historicroads.com/",
+  "https://marg-historicroads.com",
   "http://localhost:5173",
 ];
 
@@ -25,7 +25,6 @@ if (process.env.NODE_ENV !== "production") {
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-
 
 app.use("/marg/visitor", require("./routes/visitorCounterRouter"));
 

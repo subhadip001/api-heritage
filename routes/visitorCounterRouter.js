@@ -2,7 +2,7 @@ const express = require("express");
 const { VisitorCounter } = require("../models/visitorCounter");
 const router = express.Router();
 
-// Get all visitor counters
+
 router.get("/", async (req, res) => {
   try {
     const countDoc = await VisitorCounter.findOne();
@@ -13,7 +13,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-// Create a new visitor counter
+
 router.post("/", async (req, res) => {
   await VisitorCounter.findOneAndUpdate(
     {},
